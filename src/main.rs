@@ -5,6 +5,9 @@ use std::io::Read;
 mod chip8;
 mod cpu;
 mod ram;
+mod keyboard;
+mod display;
+mod bus;
 
 #[allow(unused_must_use)]
 fn main() {
