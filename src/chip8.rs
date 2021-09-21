@@ -3,14 +3,14 @@ use crate::bus::Bus;
 
 pub struct Chip8 {
     cpu: Cpu,
-		bus: Bus,
+    bus: Bus,
 }
 
 impl Chip8 {
     pub fn new() -> Chip8 {
         Chip8 {
             cpu: Cpu::new(),
-						bus: Bus::new(),
+	    bus: Bus::new(),
         }
     }
 
@@ -21,13 +21,13 @@ impl Chip8 {
     }
 
     pub fn run_instruction(&mut self) {
-				self.bus.tick();
+	self.bus.tick();
         self.cpu.run_instruction(&mut self.bus);
-				println!("Cpu state: {:?}", self.cpu);
-				println!("Bus state: {:?}", self.bus);
+	println!("Cpu state: {:?}", self.cpu);
+	println!("Bus state: {:?}", self.bus);
     }
 
-		pub fn get_display_buffer(&self) -> &[u8] {
- 				self.bus.get_display_buffer()
-		}
+    pub fn get_display_buffer(&self) -> &[u8] {
+ 	self.bus.get_display_buffer()
+    }
 }
