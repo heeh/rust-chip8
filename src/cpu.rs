@@ -43,7 +43,7 @@ impl Cpu {
 	    }
 	}
 	if should_set_vf {
-	    
+	    self.write_reg_vx(0xF, 1);	    
 	} else {
 	    self.write_reg_vx(0xF, 0);
 	}
@@ -100,6 +100,15 @@ impl Cpu {
 		    self.pc += 2;
 		}
 	    },
+	    0x4 => {
+		let vx = self.read_reg_vx(x);
+		if vx != nn {
+		    self.pc += 4;
+		}else {
+		    self.pc += 2;
+		}
+		    
+	    }
 	    0x6 => {
 		//vx = nn								
 		self.write_reg_vx(x, nn);
@@ -218,6 +227,11 @@ impl Cpu {
 			bus.set_delay_timer(self.read_reg_vx(x));
 			self.pc += 2;												
 		    },
+
+		    0x18 => {
+			// sound timer
+			self.pc += 2;
+		    }
 		    0x65 => {
 			for index in 0..x+1 {
 			    let value = bus.ram_read_byte(self.i + index as u16);
