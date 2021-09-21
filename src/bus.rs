@@ -2,6 +2,7 @@ use crate::keyboard::Keyboard;
 use crate::display::Display;
 use crate::ram::Ram;
 use std::fmt;
+use minifb::Window;
 
 pub struct Bus {
     ram: Ram,
@@ -14,8 +15,8 @@ impl Bus {
     pub fn new() -> Bus {
 	Bus {
 	    ram: Ram::new(),
-	    keyboard: Keyboard::new(),
 	    display: Display::new(),
+	    keyboard: Keyboard::new(),
 	    delay_timer: 0,
 	    
 	}
@@ -29,9 +30,16 @@ impl Bus {
     pub fn debug_draw_byte(&mut self, byte: u8, x: u8, y: u8) -> bool{
 	self.display.debug_draw_byte(byte, x, y)
     }
-    pub fn key_pressed(&self, key_code: u8) -> bool{
-	self.keyboard.key_pressed(key_code)
+    pub fn set_key_pressed(&mut self, key: Option<u8>) {
+	self.keyboard.set_key_pressed(key);
     }
+    pub fn is_key_pressed(&self, key_code: u8) -> bool{
+	self.keyboard.is_key_pressed(key_code)
+    }
+    pub fn get_key_pressed(&self) -> Option<u8> {
+	self.keyboard.get_key_pressed()
+    }
+    
     pub fn present_screen(&self) {
 	self.display.present();
     }
@@ -56,7 +64,8 @@ impl Bus {
     pub fn get_display_buffer(&self) ->&[u8] {
 	self.display.get_display_buffer()
     }
-    
+
+
 }
 
 impl fmt::Debug for Bus {

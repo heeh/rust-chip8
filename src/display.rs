@@ -13,26 +13,25 @@ impl Display {
 	}
     }
     pub fn debug_draw_byte(&mut self, byte: u8, x: u8, y: u8) -> bool{
-	let mut flipped = false;
+	let mut erased = false;
 	let mut b = byte;
 	let mut coord_x = x as usize;
 	let coord_y = y as usize;
 	
 	for _ in 0..8 {
-	    match (b & 0b1000_0000) >> 7 {
-		0 => {
-		    if self.screen[coord_y * WIDTH + coord_x] == 1 {
-			flipped = true;
-		    }
-		    self.screen[coord_y * WIDTH + coord_x] = 0;
-		},
-		1 => self.screen[coord_y * WIDTH + coord_x] = 1,
- 		_ => unreachable!()
+	    let index = coord_y * WIDTH + coord_x;
+	    let bit =  (b & 0b1000_0000) >> 7;
+	    let prev_value = self.screen[index];
+	    
+	    self.screen[index] ^= bit;
+	    if prev_value == 1 && self.screen[index] == 0 {
+		erased = true;
 	    }
+
 	    coord_x += 1;
 	    b <<=  1;
 	}
-	flipped
+	erased
     }
     
     pub fn present(&self) {
